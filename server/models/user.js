@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -20,7 +19,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please Enter Your Password"],
     minLength: [8, "Password should be greater than 8 characters"],
-    select: false,
   },
   avatar: {
     public_id: {

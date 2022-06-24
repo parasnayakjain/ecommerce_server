@@ -1,6 +1,4 @@
-const app = require("../app");
 const func = require("../middleware/assyncError");
-const errorHandler = require("../middleware/error");
 const Product = require("../models/product");
 const ErrorHander = require("../utils/error");
 const ApiFeatures =require("../utils/apiFeatures");
