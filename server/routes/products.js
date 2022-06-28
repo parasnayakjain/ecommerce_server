@@ -1,16 +1,31 @@
 const express = require("express");
-const { getAllProducts, createProduct, updateProduct, deleteProduct, getProduct } = require("../controllers/product");
+const { getAllProducts, createProduct, updateProduct, deleteProduct, getProduct, createReview, getAllReview } = require("../controllers/product");
 const router = express.Router();
-const authNormal=require("../middleware/auth")
+const authNormal = require("../middleware/auth");
+const authAdmin = require("../middleware/authAdmin");
 router
   .route("/products")
-  .get(getAllProducts)
+   .get(getAllProducts)
+
 router
-  .route("/product/new")
-  .post(authNormal,createProduct)
+  .route("/admin/product/:id")
+   .put(authNormal, authAdmin, updateProduct)
+   .delete(authNormal, authAdmin, deleteProduct)
+
 router
   .route("/product/:id")
-  .put(authNormal,updateProduct)
-  .delete(authNormal,deleteProduct)
-  .get(authNormal,getProduct)
+   .get(getProduct)
+
+router
+  .route("/admin/product")
+   .post(authNormal, authAdmin, createProduct);
+
+router
+  .route("/review")
+   .post(authNormal,createReview);
+
+router
+  .route("/allReviews")
+   .get(authNormal,getAllReview);
+
 module.exports = router;

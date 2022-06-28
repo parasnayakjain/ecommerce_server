@@ -24,7 +24,6 @@ const login = func((async (req, res, next) => {
 
     if (!email || !password)
         return next(new ErrorHander("Enter Eamil and Password", 400));
-    console.log(email, password);
     const user = await User.findOne({ email: email, password: password });
 
     if (!user)
@@ -47,12 +46,11 @@ const logout = func((async (req, res, next) => {
 
 }))
 
-
 const updatePassword = func(async (req, res, next) => {
     const { oldPassword, newPassword, confirmPassword } = req.body;
     const { id } = req.cookies;
     if (!oldPassword || !newPassword  || !confirmPassword)
-        return next(new ErrorHander("Enter Eamil and Password", 400));
+        return next(new ErrorHander("Ente Passwords", 400));
     if (newPassword != confirmPassword)
         return next(new ErrorHander("PLease eneter same Passwords", 400));
 
@@ -88,4 +86,84 @@ const updateProfile = func(async (req, res, next) => {
         message: "updated succesfully"
     })
 })
-module.exports = { registerUser, login, logout, updatePassword ,updateProfile};
+
+const getAllUsers=func((async (req,res,next)=>{
+    const users= await User.find();
+     
+
+    res.status(200).json({
+        sucess:true,
+        users
+    });
+}))
+
+const deleteMe=func((async(req,res,next)=>{
+    const user=req.user;
+
+    user.remove();
+    res.status(200).json({
+        sucess:true,
+        message:"deleted succesfully"
+    });
+
+}))
+
+const deleteUser=func((async(req,res,next)=>{
+ 
+    const {id}=req.query;
+    const user=await User.findById(id);
+    if(!user)
+       return next(new ErrorHander("PLease enter valid Id" , 404));
+    
+    user.remove();
+    res.status(200).json({
+        sucess:true,
+        id:id,
+        message:"deleted succesfully"
+    });
+
+}))
+
+const getUserMe=func(async (req,res,next)=>{
+    const user=req.user;
+
+    res.status(200).json({
+        sucess:"true",
+        user
+    })
+})
+
+const getUser=func(async(req,res,next)=>{
+    const {id}=req.query;
+    const user=await User.findById(id);
+    if(!user)
+       return next(new ErrorHander("PLease enter valid Id" , 404));
+
+    res.status(200).json({
+        sucess:true,
+        user
+    });
+
+})
+
+const updateRole=func(async(req,res,next)=>{
+    const {id,role}=req.query;
+    const user=await User.findById(id);
+    if(!user)
+       return next(new ErrorHander("PLease enter valid Id" , 404));
+    
+    user.role=role;
+    user.save();
+
+    res.status(200).json({
+        success:true,
+        message:`role updated to ${role}`
+    })
+})
+
+
+
+
+module.exports = { registerUser, login, logout, updatePassword ,updateProfile,
+                   getAllUsers,deleteMe,deleteUser,getUserMe,getUser,updateRole
+};
