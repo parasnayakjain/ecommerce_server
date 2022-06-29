@@ -25,7 +25,7 @@ const getAllProducts = func(async (req, res) => {
     res.status(200).json({
         sucess: true,
         products,
-        productCount
+        productCount:0
         
     });
 })
