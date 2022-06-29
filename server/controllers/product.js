@@ -20,7 +20,7 @@ const getAllProducts = func(async (req, res) => {
     const a=new ApiFeatures(Product.find() , req.query);
     a.search();
     a.filter();
-    a.pagination(5);
+    a.pagination(2);
     const products = await a.query;
     res.status(200).json({
         sucess: true,
