@@ -15,7 +15,8 @@ const createProduct = func(async (req, res, next) => {
 
 const getAllProducts = func(async (req, res) => {
     
-
+    const productsArray=Product.find();
+    const productCount=productsArray.length;
     const a=new ApiFeatures(Product.find() , req.query);
     a.search();
     a.filter();
@@ -23,7 +24,9 @@ const getAllProducts = func(async (req, res) => {
     const products = await a.query;
     res.status(200).json({
         sucess: true,
-        products
+        products,
+        productCount
+        
     });
 })
 
