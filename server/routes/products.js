@@ -3,6 +3,12 @@ const { getAllProducts, createProduct, updateProduct, deleteProduct, getProduct,
 const router = express.Router();
 const authNormal = require("../middleware/auth");
 const authAdmin = require("../middleware/authAdmin");
+
+router 
+  .route("/")
+    .get((req,res)=>{
+res.send("Hello")});
+
 router
   .route("/products")
    .get(getAllProducts)
