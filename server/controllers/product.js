@@ -12,24 +12,33 @@ const createProduct = func(async (req, res, next) => {
 
 
 })
+getAllProducts = func(async (req, res, next) => {
+    const resultPerPage = 2;
+    const productsCount = await Product.countDocuments();
+  
+    const apiFeature = new ApiFeatures(Product.find(), req.query)
+      .search()
+      .filter();
+  
+    let products = await apiFeature.query;
+  
+    let filteredProductsCount = products.length;
 
-const getAllProducts = func(async (req, res) => {
-    
+    var {page}=req.query;
+    page=page?page:1;
+    var finalProducts=[];
 
-    const a=new ApiFeatures(Product.find() , req.query);
-    a.search();
-    a.filter();
-    const productCount=await a.query.length;
-    a.pagination(2);
-    const products = await a.query;
+    for(var i=resultPerPage*(page-1)-1; i<resultPerPage*page;i++)
+     finalProducts.push(products[i]);
+
     res.status(200).json({
-        sucess: true,
-        products,
-        productCount
-        
+      success: true,
+      finalProducts,
+      productsCount,
+      resultPerPage,
+      filteredProductsCount,
     });
-})
-
+  });
 const updateProduct = func(async (req, res, next) => {
     const id = req.params.id;
     let product = await Product.findById(id);
