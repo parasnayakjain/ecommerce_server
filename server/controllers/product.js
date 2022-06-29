@@ -15,11 +15,11 @@ const createProduct = func(async (req, res, next) => {
 
 const getAllProducts = func(async (req, res) => {
     
-    const productsArray=await Product.find();
-    const productCount=productsArray.length;
+
     const a=new ApiFeatures(Product.find() , req.query);
     a.search();
     a.filter();
+    const productCount=await a.query.length;
     a.pagination(2);
     const products = await a.query;
     res.status(200).json({
