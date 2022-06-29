@@ -28,7 +28,7 @@ getAllProducts = func(async (req, res, next) => {
     page=page?page:1;
     var finalProducts=[];
 
-    for(var i=resultPerPage*(page-1); i<resultPerPage*page;i++)
+    for(var i=resultPerPage*(page-1); i<resultPerPage*page & i<productsCount;i++)
      finalProducts.push(products[i]);
 
     res.status(200).json({
