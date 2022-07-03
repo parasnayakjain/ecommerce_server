@@ -2,26 +2,34 @@ const func = require("../middleware/assyncError");
 const User = require("../models/user");
 const ErrorHander = require("../utils/error");
 const setToken = require("../utils/setToken");
-
+const cloudinary=require("cloudinary");
 
 
 const registerUser = func(async (req, res, next) => {
-    const { name, email, password } = req.body;
 
+    const { name, email, password,avatar } = req.body;
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder: "ecommerce",
+        width: 150,
+        crop: "scale",
+      });
+    console.log(req.body);
     const user = await User.create({
-        name, email, password,
+        name:name, 
+        email:email,
+        password: password,
         avatar: {
-            public_id: "a",
-            url: "a"
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url
         }
+        
     });
-
-    next();
+     next();
 });
 
 const login = func((async (req, res, next) => {
     const { email, password } = req.body;
-
+    console.log(`1 ${req.body.email}`);
     if (!email || !password)
         return next(new ErrorHander("Enter Eamil and Password", 400));
     const user = await User.findOne({ email: email, password: password });
@@ -29,7 +37,8 @@ const login = func((async (req, res, next) => {
     if (!user)
         return next(new ErrorHander("Enter Valid Eamil and Password", 400));
 
-    setToken(res, user);
+        setToken(res, user);
+    
 
 }))
 
