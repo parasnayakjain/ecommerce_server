@@ -9,7 +9,12 @@ const fileUpload=require("express-fileupload");
 const connectDB=require("./database/connect");
 const errorHandler = require("./middleware/error");
 const cors=require("cors");
-app.use(cors());
+const corsOptions ={
+    origin:true, 
+    credentials:true,           
+    optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
