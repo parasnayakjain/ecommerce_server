@@ -4,6 +4,7 @@ const options = {
       Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    sameSite: 'None'
   };
  // console.log(options);
  res.status(200).cookie("id" , `${user._id}`,options).json({
