@@ -43,11 +43,12 @@ const login = func((async (req, res, next) => {
 }))
 
 const logout = func((async (req, res, next) => {
-    res.cookie("id", "1", {
+    res.cookie("id", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
         sameSite: 'None',
-        secure: true
+        secure: true,
+        overwrite: true
     });
 
     res.status(200).json({
