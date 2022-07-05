@@ -83,21 +83,40 @@ const updatePassword = func(async (req, res, next) => {
 })
 
 const updateProfile = func(async (req, res, next) => {
-    const {name , email}=req.body;
-    const { id } = req.cookies;
-    if (!email || !name)
-      return next(new ErrorHander("Enter Eamil and Password", 400)); 
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
 
-      const user = await User.findByIdAndUpdate(id, {name:name , email:email}, {
-        new: true,
-        runValidators: true,
-        useFindAndModify: false,
-      });
-     res.status(200).json({
-        success: "true",
-        message: "updated succesfully",
-        data:user
-    })
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
+
+    const imageId = user.avatar.public_id;
+
+    await cloudinary.v2.uploader.destroy(imageId);
+
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
+
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({
+    user,
+    success: true,
+  });
 })
 
 const getAllUsers=func((async (req,res,next)=>{
