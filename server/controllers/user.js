@@ -59,17 +59,14 @@ const logout = func((async (req, res, next) => {
 }))
 
 const updatePassword = func(async (req, res, next) => {
-    const { oldPassword, newPassword, confirmPassword } = req.body;
+    const {newPassword, confirmPassword } = req.body;
     const { id } = req.cookies;
-    if (!oldPassword || !newPassword  || !confirmPassword)
+    if ( !newPassword  || !confirmPassword)
         return next(new ErrorHander("Ente Passwords", 400));
     if (newPassword != confirmPassword)
         return next(new ErrorHander("PLease eneter same Passwords", 400));
 
     const user = await User.findById(id);
-    if (user.password != oldPassword)
-        return next(new ErrorHander("PLease eneter correct Passwords", 400))
-
     user.password = newPassword;
     user.save();
     res.status(200).json({
