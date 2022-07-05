@@ -46,6 +46,8 @@ const logout = func((async (req, res, next) => {
     res.cookie("id", null, {
         expires: new Date(Date.now()),
         httpOnly: true,
+        sameSite: 'None',
+        secure: true
     });
 
     res.status(200).json({
