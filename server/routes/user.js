@@ -29,7 +29,7 @@ router
   .route("/user")
     .delete(authNormal,deleteMe)
     .get(authNormal,getUserMe)
-    .post(authNormal , updateProfile)
+    .put(authNormal , updateProfile)
 
 router
   .route("/admin/user")
