@@ -44,7 +44,7 @@ const login = func((async (req, res, next) => {
 
 const logout = func((async (req, res, next) => {
     res.cookie("id", null, {
-        expires: new Date(Date.now()),
+       // expires: new Date(Date.now()),
         httpOnly: true,
         sameSite: 'None',
         secure: true
