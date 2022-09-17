@@ -8,19 +8,25 @@ const cloudinary=require("cloudinary");
 const registerUser = func(async (req, res, next) => {
 
     const { name, email, password,avatar } = req.body;
-    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-        folder: "ecommerce",
-        width: 150,
-        crop: "scale",
-      });
-    console.log(req.body);
+    var public_id="a";
+    var url="https://www.freeiconspng.com/uploads/user-icon-png-person-user-profile-icon-20.png";
+    
+    if (avatar!="/Profile.png") {
+        const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+            folder: "ecommerce",
+            width: 150,
+            crop: "scale",
+        });
+        public_id = myCloud.public_id,
+        url = myCloud.secure_url
+    }
     const user = await User.create({
         name:name, 
         email:email,
         password: password,
         avatar: {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url
+            public_id: public_id,
+            url: url
         }
         
     });
