@@ -7,7 +7,7 @@ const authAdmin = require("../middleware/authAdmin");
 router 
   .route("/")
     .get((req,res)=>{
-res.send("Hello")});
+res.send("HelloWorld")});
 
 router
   .route("/products")
